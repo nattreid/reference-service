@@ -79,6 +79,14 @@ abstract class Service
 	}
 
 	/**
+	 * @return array
+	 */
+	public function fetchUntranslatedPairsById()
+	{
+		return $this->entities;
+	}
+
+	/**
 	 *
 	 * @param int $id
 	 * @return Entity
