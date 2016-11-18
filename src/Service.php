@@ -56,7 +56,7 @@ abstract class Service
 	/**
 	 * @return array
 	 */
-	public function fetchPaymentsByName()
+	public function fetchPairsByName()
 	{
 		$arr = [];
 		foreach ($this->entities as $key => $payment) {
@@ -69,7 +69,7 @@ abstract class Service
 	/**
 	 * @return array
 	 */
-	public function fetchPaymentsById()
+	public function fetchPairsById()
 	{
 		$arr = [];
 		foreach ($this->entities as $key => $payment) {
