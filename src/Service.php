@@ -85,7 +85,7 @@ abstract class Service
 	{
 		$arr = [];
 		foreach ($this->entities as $key => $payment) {
-			$arr[$key] = $payment->name;
+			$arr[$key] = $this->name . '.' . $payment->name;
 		}
 		return $arr;
 	}
