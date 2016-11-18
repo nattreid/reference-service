@@ -83,7 +83,11 @@ abstract class Service
 	 */
 	public function fetchUntranslatedPairsById()
 	{
-		return $this->entities;
+		$arr = [];
+		foreach ($this->entities as $key => $payment) {
+			$arr[$key] = $payment->name;
+		}
+		return $arr;
 	}
 
 	/**
