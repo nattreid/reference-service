@@ -58,10 +58,7 @@ abstract class Service
 	 */
 	public function fetchPairsByName()
 	{
-		$arr = [];
-		foreach ($this->entities as $key => $payment) {
-			$arr[$key] = $this->translator->translate($this->name . '.' . $payment->name);
-		}
+		$arr = $this->fetchPairsById();
 		asort($arr);
 		return $arr;
 	}
