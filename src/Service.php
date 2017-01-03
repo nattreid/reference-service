@@ -17,6 +17,9 @@ abstract class Service
 	/** @var Entity[] */
 	private $entities = [];
 
+	/** @var Entity[] */
+	private $classes = [];
+
 	/** @var ITranslator */
 	private $translator;
 
@@ -51,6 +54,7 @@ abstract class Service
 			throw new InvalidArgumentException('Duplicite key!');
 		}
 		$this->entities[$key] = $entity;
+		$this->classes[get_class($entity)] = $entity;
 	}
 
 	/**
@@ -69,8 +73,8 @@ abstract class Service
 	public function fetchPairsById()
 	{
 		$arr = [];
-		foreach ($this->entities as $key => $payment) {
-			$arr[$key] = $this->translator->translate($this->name . '.' . $payment->name);
+		foreach ($this->entities as $key => $entity) {
+			$arr[$key] = $this->translator->translate($this->name . '.' . $entity->title);
 		}
 		return $arr;
 	}
@@ -81,21 +85,33 @@ abstract class Service
 	public function fetchUntranslatedPairsById()
 	{
 		$arr = [];
-		foreach ($this->entities as $key => $payment) {
-			$arr[$key] = $this->name . '.' . $payment->name;
+		foreach ($this->entities as $key => $entity) {
+			$arr[$key] = $this->name . '.' . $entity->title;
 		}
 		return $arr;
 	}
 
 	/**
-	 *
 	 * @param int $id
 	 * @return Entity
 	 */
 	public function getById($id)
 	{
 		if (isset($this->entities[$id])) {
-			return $this->entities[$id];
+			return clone $this->entities[$id];
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * @param string $class
+	 * @return Entity
+	 */
+	public function getByClass($class)
+	{
+		if (isset($this->classes[$class])) {
+			return clone $this->classes[$class];
 		} else {
 			return null;
 		}

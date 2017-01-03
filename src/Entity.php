@@ -3,26 +3,25 @@
 namespace NAttreid\ReferenceService;
 
 use NAttreid\Utils\Strings;
+use Nette\Application\UI\Control;
 use Nette\Reflection\ClassType;
-use Nette\SmartObject;
 
 /**
  * Entity
  *
  * @property-read int $id
- * @property-read string $name
+ * @property-read string $title
+ * @property-read boolean $render
  *
  * @author Attreid <attreid@gmail.com>
  */
-abstract class Entity
+abstract class Entity extends Control
 {
-	use SmartObject;
-
 	/** @var int */
 	private $id;
 
 	/** @var string */
-	private $name;
+	private $title;
 
 	/**
 	 * Entity constructor.
@@ -30,22 +29,28 @@ abstract class Entity
 	 */
 	public function __construct($id)
 	{
+		parent::__construct();
 		$this->id = $id;
 	}
 
 	/** @return int */
-	public function getId()
+	protected function getId()
 	{
 		return $this->id;
 	}
 
 	/** @return string */
-	public function getName()
+	protected function getTitle()
 	{
-		if ($this->name === null) {
+		if ($this->title === null) {
 			$reflection = new ClassType($this);
-			$this->name = Strings::firstLower($reflection->shortName);
+			$this->title = Strings::firstLower($reflection->shortName);
 		}
-		return $this->name;
+		return $this->title;
+	}
+
+	protected function isRender()
+	{
+		return method_exists($this, 'render');
 	}
 }
