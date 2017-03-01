@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace NAttreid\ReferenceService;
 
 use NAttreid\Utils\Strings;
@@ -11,7 +13,7 @@ use Nette\Reflection\ClassType;
  *
  * @property-read int $id
  * @property-read string $title
- * @property-read boolean $render
+ * @property-read bool $render
  *
  * @author Attreid <attreid@gmail.com>
  */
@@ -23,24 +25,20 @@ abstract class Entity extends Control
 	/** @var string */
 	private $title;
 
-	/**
-	 * Entity constructor.
-	 * @param int $id
-	 */
-	public function __construct($id)
+	public function __construct(int $id)
 	{
 		parent::__construct();
 		$this->id = $id;
 	}
 
 	/** @return int */
-	protected function getId()
+	protected function getId(): int
 	{
 		return $this->id;
 	}
 
 	/** @return string */
-	protected function getTitle()
+	protected function getTitle(): string
 	{
 		if ($this->title === null) {
 			$reflection = new ClassType($this);
@@ -49,7 +47,10 @@ abstract class Entity extends Control
 		return $this->title;
 	}
 
-	protected function isRender()
+	/**
+	 * @return bool
+	 */
+	protected function isRender(): bool
 	{
 		return method_exists($this, 'render');
 	}

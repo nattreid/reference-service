@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace NAttreid\ReferenceService;
 
 use InvalidArgumentException;
@@ -39,16 +41,16 @@ abstract class Service
 	/**
 	 * @return array[key => class]
 	 */
-	public static function getEntities()
+	public static function getEntities(): array
 	{
 		return [];
 	}
 
 	/**
 	 * @param int $key
-	 * @param $entity
+	 * @param Entity $entity
 	 */
-	public function add($key, Entity $entity)
+	public function add(int $key, Entity $entity)
 	{
 		if (isset($this->entities[$key])) {
 			throw new InvalidArgumentException('Duplicite key!');
@@ -60,7 +62,7 @@ abstract class Service
 	/**
 	 * @return array
 	 */
-	public function fetchPairsByName()
+	public function fetchPairsByName(): array
 	{
 		$arr = $this->fetchPairsById();
 		asort($arr);
@@ -70,7 +72,7 @@ abstract class Service
 	/**
 	 * @return array
 	 */
-	public function fetchPairsById()
+	public function fetchPairsById(): array
 	{
 		$arr = [];
 		foreach ($this->entities as $key => $entity) {
@@ -82,7 +84,7 @@ abstract class Service
 	/**
 	 * @return array
 	 */
-	public function fetchUntranslatedPairsById()
+	public function fetchUntranslatedPairsById(): array
 	{
 		$arr = [];
 		foreach ($this->entities as $key => $entity) {
@@ -95,7 +97,7 @@ abstract class Service
 	 * @param int $id
 	 * @return Entity
 	 */
-	public function getById($id)
+	public function getById(int $id): Entity
 	{
 		if (isset($this->entities[$id])) {
 			return clone $this->entities[$id];
@@ -108,7 +110,7 @@ abstract class Service
 	 * @param string $class
 	 * @return Entity
 	 */
-	public function getByClass($class)
+	public function getByClass(string $class): Entity
 	{
 		if (isset($this->classes[$class])) {
 			return clone $this->classes[$class];
