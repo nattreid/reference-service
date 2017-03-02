@@ -95,9 +95,9 @@ abstract class Service
 
 	/**
 	 * @param int $id
-	 * @return Entity
+	 * @return Entity|null
 	 */
-	public function getById(int $id): Entity
+	public function getById(int $id)
 	{
 		if (isset($this->entities[$id])) {
 			return clone $this->entities[$id];
@@ -108,9 +108,9 @@ abstract class Service
 
 	/**
 	 * @param string $class
-	 * @return Entity
+	 * @return Entity|null
 	 */
-	public function getByClass(string $class): Entity
+	public function getByClass(string $class)
 	{
 		if (isset($this->classes[$class])) {
 			return clone $this->classes[$class];
