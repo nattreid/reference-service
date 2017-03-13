@@ -55,8 +55,27 @@ abstract class Service
 		if (isset($this->entities[$key])) {
 			throw new InvalidArgumentException('Duplicite key!');
 		}
+		$entity->setService($this);
 		$this->entities[$key] = $entity;
 		$this->classes[get_class($entity)] = $entity;
+	}
+
+	/**
+	 * @param Entity $entity
+	 * @return string
+	 */
+	public function translate(Entity $entity): string
+	{
+		return $this->translator->translate($this->getFullName($entity));
+	}
+
+	/**
+	 * @param Entity $entity
+	 * @return string
+	 */
+	public function getFullName(Entity $entity): string
+	{
+		return $this->name . '.' . $entity->entityName;
 	}
 
 	/**
@@ -76,7 +95,7 @@ abstract class Service
 	{
 		$arr = [];
 		foreach ($this->entities as $key => $entity) {
-			$arr[$key] = $this->translator->translate($this->name . '.' . $entity->title);
+			$arr[$key] = $this->translate($entity);
 		}
 		return $arr;
 	}
@@ -88,7 +107,7 @@ abstract class Service
 	{
 		$arr = [];
 		foreach ($this->entities as $key => $entity) {
-			$arr[$key] = $this->name . '.' . $entity->title;
+			$arr[$key] = $this->getFullName($entity);
 		}
 		return $arr;
 	}

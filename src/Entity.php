@@ -13,6 +13,7 @@ use Nette\Reflection\ClassType;
  *
  * @property-read int $id
  * @property-read string $title
+ * @property-read string $entityName
  * @property-read bool $render
  *
  * @author Attreid <attreid@gmail.com>
@@ -25,10 +26,21 @@ abstract class Entity extends Control
 	/** @var string */
 	private $title;
 
+	/** @var Service */
+	private $service;
+
 	public function __construct(int $id)
 	{
 		parent::__construct();
 		$this->id = $id;
+	}
+
+	/**
+	 * @param Service $service
+	 */
+	public function setService(Service $service)
+	{
+		$this->service = $service;
 	}
 
 	/** @return int */
@@ -38,13 +50,19 @@ abstract class Entity extends Control
 	}
 
 	/** @return string */
-	protected function getTitle(): string
+	protected function getEntityName(): string
 	{
 		if ($this->title === null) {
 			$reflection = new ClassType($this);
 			$this->title = Strings::firstLower($reflection->shortName);
 		}
 		return $this->title;
+	}
+
+	/** @return string */
+	protected function getTitle(): string
+	{
+		return $this->service->translate($this);
 	}
 
 	/**
