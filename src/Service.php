@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace NAttreid\ReferenceService;
 
@@ -50,7 +50,7 @@ abstract class Service
 	 * @param int $key
 	 * @param Entity $entity
 	 */
-	public function add(int $key, Entity $entity)
+	public function add(int $key, Entity $entity): void
 	{
 		if (isset($this->entities[$key])) {
 			throw new InvalidArgumentException('Duplicite key!');
@@ -116,7 +116,7 @@ abstract class Service
 	 * @param int $id
 	 * @return Entity|null
 	 */
-	public function getById(int $id)
+	public function getById(int $id): ?Entity
 	{
 		if (isset($this->entities[$id])) {
 			return clone $this->entities[$id];
@@ -129,7 +129,7 @@ abstract class Service
 	 * @param string $class
 	 * @return Entity|null
 	 */
-	public function getByClass(string $class)
+	public function getByClass(string $class): ?Entity
 	{
 		if (isset($this->classes[$class])) {
 			return clone $this->classes[$class];

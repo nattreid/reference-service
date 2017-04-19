@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace NAttreid\ReferenceService;
 
@@ -38,7 +38,7 @@ abstract class Entity extends Control
 	/**
 	 * @param Service $service
 	 */
-	public function setService(Service $service)
+	public function setService(Service $service): void
 	{
 		$this->service = $service;
 	}

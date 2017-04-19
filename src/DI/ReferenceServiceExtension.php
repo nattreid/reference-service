@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace NAttreid\ReferenceService\DI;
 
@@ -18,7 +18,7 @@ class ReferenceServiceExtension extends CompilerExtension
 		'classes' => []
 	];
 
-	public function loadConfiguration()
+	public function loadConfiguration(): void
 	{
 		$builder = $this->getContainerBuilder();
 		$config = $this->validateConfig($this->defaults, $this->getConfig());
