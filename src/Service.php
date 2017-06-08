@@ -47,6 +47,14 @@ abstract class Service
 	}
 
 	/**
+	 * @return Entity[]
+	 */
+	public function findAll(): array
+	{
+		return $this->entities;
+	}
+
+	/**
 	 * @param int $key
 	 * @param Entity $entity
 	 */
