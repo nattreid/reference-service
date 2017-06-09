@@ -34,7 +34,7 @@ class ReferenceServiceExtension extends CompilerExtension
 				$name = $this->prefix($reflection->shortName . '.' . $key);
 				$builder->addDefinition($name)
 					->setClass($class)
-					->setArguments([$key]);
+					->addSetup('setTranslator');
 
 				$service->addSetup('add', [$key, '@' . $name]);
 			}

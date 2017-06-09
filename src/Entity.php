@@ -6,7 +6,9 @@ namespace NAttreid\ReferenceService;
 
 use NAttreid\Utils\Strings;
 use Nette\Application\UI\Control;
+use Nette\Localization\ITranslator;
 use Nette\Reflection\ClassType;
+use Nette\Utils\Html;
 
 /**
  * Entity
@@ -15,6 +17,7 @@ use Nette\Reflection\ClassType;
  * @property-read string $title
  * @property-read string $entityName
  * @property-read bool $render
+ * @property-read Html $prototype
  *
  * @author Attreid <attreid@gmail.com>
  */
@@ -24,52 +27,59 @@ abstract class Entity extends Control
 	private $id;
 
 	/** @var string */
-	private $title;
+	private $shortName;
 
-	/** @var Service */
-	private $service;
+	/** @var string */
+	private $serviceName;
 
-	public function __construct(int $id)
+	/** @var ITranslator */
+	private $translator;
+
+	public function setup(int $id, string $name): void
 	{
-		parent::__construct();
 		$this->id = $id;
+		$this->serviceName = $name;
 	}
 
-	/**
-	 * @param Service $service
-	 */
-	public function setService(Service $service): void
+	public function setTranslator(?ITranslator $translator): void
 	{
-		$this->service = $service;
+		$this->translator = $translator;
 	}
 
-	/** @return int */
 	protected function getId(): int
 	{
 		return $this->id;
 	}
 
-	/** @return string */
 	protected function getEntityName(): string
 	{
-		if ($this->title === null) {
+		if ($this->shortName === null) {
 			$reflection = new ClassType($this);
-			$this->title = Strings::firstLower($reflection->shortName);
+			$this->shortName = Strings::firstLower($reflection->shortName);
 		}
-		return $this->title;
+		return $this->shortName;
 	}
 
-	/** @return string */
 	protected function getTitle(): string
 	{
-		return $this->service->translate($this);
+		$name = $this->serviceName . '.' . $this->entityName;
+
+		if ($this->translator !== null) {
+			return $this->translator->translate($name);
+		} else {
+			return $name;
+		}
 	}
 
-	/**
-	 * @return bool
-	 */
 	protected function isRender(): bool
 	{
 		return method_exists($this, 'render');
+	}
+
+	protected function getPrototype(): Html
+	{
+		$html = Html::el();
+		$html->setText($this->title);
+		return $html;
 	}
 }

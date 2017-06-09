@@ -28,14 +28,12 @@ abstract class Service
 	/** @var string */
 	protected $name;
 
-	public function __construct(ITranslator $translator)
+	public function __construct()
 	{
 		if ($this->name === null) {
 			$reflection = new ClassType($this);
 			$this->name = Strings::firstLower($reflection->shortName);
 		}
-
-		$this->translator = $translator;
 	}
 
 	/**
@@ -54,41 +52,16 @@ abstract class Service
 		return $this->entities;
 	}
 
-	/**
-	 * @param int $key
-	 * @param Entity $entity
-	 */
 	public function add(int $key, Entity $entity): void
 	{
 		if (isset($this->entities[$key])) {
 			throw new InvalidArgumentException('Duplicite key!');
 		}
-		$entity->setService($this);
+		$entity->setup($key, $this->name);
 		$this->entities[$key] = $entity;
 		$this->classes[get_class($entity)] = $entity;
 	}
 
-	/**
-	 * @param Entity $entity
-	 * @return string
-	 */
-	public function translate(Entity $entity): string
-	{
-		return $this->translator->translate($this->getFullName($entity));
-	}
-
-	/**
-	 * @param Entity $entity
-	 * @return string
-	 */
-	public function getFullName(Entity $entity): string
-	{
-		return $this->name . '.' . $entity->entityName;
-	}
-
-	/**
-	 * @return array
-	 */
 	public function fetchPairsByName(): array
 	{
 		$arr = $this->fetchPairsById();
@@ -96,34 +69,15 @@ abstract class Service
 		return $arr;
 	}
 
-	/**
-	 * @return array
-	 */
 	public function fetchPairsById(): array
 	{
 		$arr = [];
 		foreach ($this->entities as $key => $entity) {
-			$arr[$key] = $this->translate($entity);
+			$arr[$key] = $entity->prototype;
 		}
 		return $arr;
 	}
 
-	/**
-	 * @return array
-	 */
-	public function fetchUntranslatedPairsById(): array
-	{
-		$arr = [];
-		foreach ($this->entities as $key => $entity) {
-			$arr[$key] = $this->getFullName($entity);
-		}
-		return $arr;
-	}
-
-	/**
-	 * @param int $id
-	 * @return Entity|null
-	 */
 	public function getById(int $id): ?Entity
 	{
 		if (isset($this->entities[$id])) {
@@ -133,10 +87,6 @@ abstract class Service
 		}
 	}
 
-	/**
-	 * @param string $class
-	 * @return Entity|null
-	 */
 	public function getByClass(string $class): ?Entity
 	{
 		if (isset($this->classes[$class])) {
