@@ -22,9 +22,6 @@ abstract class Service
 	/** @var Entity[] */
 	private $classes = [];
 
-	/** @var ITranslator */
-	private $translator;
-
 	/** @var string */
 	protected $name;
 

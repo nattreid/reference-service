@@ -27,13 +27,13 @@ class ReferenceServiceExtension extends CompilerExtension
 			$reflection = new ClassType($reference);
 
 			$service = $builder->addDefinition($this->prefix($reflection->shortName))
-				->setClass($reference);
+				->setType($reference);
 
 			$classes = call_user_func([$reflection->name, 'getEntities']);
 			foreach ($classes as $key => $class) {
 				$name = $this->prefix($reflection->shortName . '.' . $key);
 				$builder->addDefinition($name)
-					->setClass($class)
+					->setType($class)
 					->addSetup('setTranslator');
 
 				$service->addSetup('add', [$key, '@' . $name]);
