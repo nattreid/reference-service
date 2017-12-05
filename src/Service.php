@@ -6,7 +6,6 @@ namespace NAttreid\ReferenceService;
 
 use InvalidArgumentException;
 use NAttreid\Utils\Strings;
-use Nette\Localization\ITranslator;
 use Nette\Reflection\ClassType;
 
 /**
